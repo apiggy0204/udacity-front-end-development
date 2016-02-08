@@ -26,7 +26,7 @@ img, embed, object, video {
 
 ### Responsive Button
 
-Allow a button to resize if the content inside of it is bigger than itself.
+Allow a button to resize if the content inside is bigger than itself.
 
 ~~~css
 nav a, button {
@@ -86,13 +86,9 @@ div {
 
 ## Common Responsive Patterns
 
+Take this layout as an example:
 
-
-### Column Drop 
-
-* At the narrowest viewport, the elements stack vertically.
-* As the viewport gets wider, the elements also expand until a break point is hit.
-* After some break point is hit, some elements become side-by-side.
+> example.html
 
 ~~~html
 <div class="container">
@@ -102,6 +98,8 @@ div {
 </div>
 ~~~
 
+> example.css
+
 ~~~css
 .container {
   display: flex;
@@ -111,8 +109,14 @@ div {
 .box {
   width: 100%;
 }
+~~~
 
-/* Adjust width responsively */
+### Column Drop 
+
+Stack elements vertically at the narrowest viewport, and put some elements side-by-side as the viewport gets wider.
+
+~~~css
+/* Put two elements side-by-side as the viewport gets wider */
 @media screen and (min-width: 300px) {
   .red, .green {
     width: 50%;
@@ -122,18 +126,11 @@ div {
 
 ### Mostly Fluid
 
-Add margin on the two sides when the viewport is beyond the largest break point, say 700px.
+As the viewport gets wider, we don't infinitely making elements wider.
+Alternatively, add margins to the left and right side.
 
 ~~~css
-.container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.box {
-  width: 100%;
-}
-
+/* The content will be of 700px width at the largest. */
 @media screen and (min-width: 700px) {
   .container {
     width: 700px;
@@ -143,7 +140,58 @@ Add margin on the two sides when the viewport is beyond the largest break point,
 }
 ~~~
 
+### Layout Shifter
 
+Elements will change the layout and the order according to the viewport size.
+
+~~~css
+.green, .blue, .red {
+  order: 10; /* assign a nondefault value for convenience*/
+}
+
+/* Adjust the layout by specifying width and element order */
+@media screen and (min-width: 600px) {
+  .green {
+    width: 25%;
+    order: 1;
+  }
+
+  .blue {
+    width: 50%; /* will be 10 if not overriden */
+  }
+
+  .red {
+    width: 25%;
+    order: 2;
+  }
+}
+~~~
+
+### Off Canvas
+
+A way to implement a side navigation bar for smaller screen sizes.
+Note: you should use javascript to toggle the `.open` class.
+
+~~~css
+nav {
+  width: 300px;
+  height: 100%;
+  transform: translate(-300px, 0); /* Hide the nav to the left of the viewport */
+  transition: transform 0.3s ease;
+}
+
+/* Show the nav on the screen when opened */
+nav.open {
+  transform: translate(0, 0);
+}
+
+/* Restore the nav position for wider screens */
+@media screen and (min-width: 600px) {
+  nav {
+    transform: translate(0, 0); 
+  }
+}
+~~~
 
 
 
