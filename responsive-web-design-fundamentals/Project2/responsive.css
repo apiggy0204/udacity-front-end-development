@@ -8,6 +8,10 @@
   width: 100%;
 }
 
+.header__menu {
+  display: none;
+}
+
 @media screen and (max-width: 549px) {
   .header__logo {
     height: 36px;
@@ -15,6 +19,40 @@
 
   .header__title {
     font-size: 2em;
+  }
+
+  .header__menu {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    padding: 1em;
+  }
+
+  .header__menu svg {
+    width: 32px;
+    fill: #E0E0E0;
+  }
+
+  .nav {
+    position: absolute;
+    z-index: 10;
+    width: 300px;
+    transform: translate(-300px, 0);
+    -webkit-transform: translate(-300px, 0);
+    transition: transform 0.3s ease;
+  }
+
+  .nav.open {
+    transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+  }
+
+  .nav__item {
+    display: list-item;
+    background-color: #fff;
+    border-bottom: 1px solid #E0E0E0;
+    width: 100%;
+    text-align: left;
   }
 }
 
