@@ -11,7 +11,7 @@
   order: 10;
 }
 
-@media screen and (max-width: 399px) {
+@media screen and (max-width: 499px) {
   .scores__location {
     display: none;
   }
