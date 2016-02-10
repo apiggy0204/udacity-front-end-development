@@ -11,6 +11,12 @@
   order: 10;
 }
 
+@media screen and (max-width: 399px) {
+  .scores__location {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 549px) {
   .header__logo {
     height: 48px;
