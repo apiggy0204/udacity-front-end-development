@@ -193,6 +193,96 @@ nav.open {
 }
 ~~~
 
+## Optimizations
 
+### Table
 
+[Responsive Data Table Roundup
+](https://css-tricks.com/responsive-data-table-roundup/)
 
+#### Hidden Columns
+
+Hind some relatively less important columns for smaller screens.
+
+~~~css
+@media screen and (max-width: 550px) {
+  .less-important-column {
+    display: none;
+  }
+}
+~~~
+
+#### No more tables
+
+Layout the table vertically. For example, turn a table
+
+| Col1 | Col2 | Col3 |
+|------|------|------|
+|1     |2     |3     |
+
+into
+
+|Col1|1  |
+|----|---|
+|Col2|2  |
+|Col3|3  |
+
+~~~css
+@media screen and (max-width: 500px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  /* Hide table header */
+  thead tr {
+    /* Do not use display: none as screen readers won't read it*/
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  /* Make room for header */
+  td {
+    position: relative;
+    padding-left: 50%;
+  }
+  
+  /* Add table headers */
+  td:before {
+    position: absolute;
+    left: 6px;
+    content: attr(data-th); /* data label for each column */
+    font-weight: bold;
+  }
+}
+~~~
+
+#### Contained Tables
+
+The table will still take up the same width as the viewport but can be scrolled within the viewport.
+
+~~~html
+<div class="table_container">
+  <table>
+    ...
+  </table>
+</div>
+~~~
+
+~~~css
+.table_container {
+  width: 100%;
+  overflow-x: auto;
+}
+~~~
+
+#### Fonts
+
+Ideal measurement: 45~90 character per line across all devices.
+
+~~~css
+.ideal-font {
+  font-size: 16px; /* Should at least as big as 16px */
+  line-height: 1.2em; /* Or larger */
+}
+~~~
