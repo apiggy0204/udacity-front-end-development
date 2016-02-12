@@ -2,7 +2,7 @@
 
 Two different box-sizing models: `content-box` and `border-box`.
 
-##### Content-box
+### Content-box
 
 ~~~css
 * {
@@ -12,7 +12,7 @@ Two different box-sizing models: `content-box` and `border-box`.
 
 * The box size does not include the border and the padding.
 
-##### Border-box
+### Border-box
 
 ~~~css
 * {
@@ -36,3 +36,26 @@ Two different box-sizing models: `content-box` and `border-box`.
   display: flex;
 }
 ~~~
+
+## CSS Frameworks
+
+### Grid Layout
+
+### Negative Space
+
+### Overflows
+
+### CSS Resetting
+
+Make your CSS styles be interpreted the same across all browsers.
+
+[normalize.css](https://necolas.github.io/normalize.css/)
+
+~~~html
+<link rel="stylesheet" src="normalize.css">
+~~~
+
+### Some useful resources
+
+* A useful image placeholder generating site: [Placehold.it](http://placehold.it/)
+* [Google Fonts](https://www.google.com/fonts)
