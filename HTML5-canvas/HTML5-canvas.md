@@ -1,5 +1,9 @@
 # HTML5 Canvas
 
+## Resources
+
+[Dive Into HTML5](http://diveintohtml5.info/)
+
 ## Canvas Basics
 
 ### Create a canvas
