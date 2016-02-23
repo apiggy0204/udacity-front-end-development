@@ -8,8 +8,6 @@
 
 ### Create a canvas
 
-Need to run on localhost
-
 ~~~html
 <canvas id="c" width="500" height="500"></canvas>
 <script>
@@ -26,6 +24,8 @@ Need to run on localhost
 ~~~
 
 ### Save an Image
+
+Note: You need to run on localhost for this to work.
 
 ~~~js
 // Open a new window for downloading
@@ -110,4 +110,6 @@ function createMeme(text) {
 	ctx.restore();
 }
 ~~~
+
+## From Pixels to Animation
 

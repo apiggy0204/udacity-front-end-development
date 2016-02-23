@@ -1,0 +1,38 @@
+<canvas id="canvas" width="500px" height="500px"></canvas>
+<script>
+  var canvas = document.querySelector("#canvas");
+  var ctx = canvas.getContext("2d");
+
+  function toGrayScale(r, g, b, a) {
+    var gray = (r + g + b) / 3;
+    return [gray, gray, gray, a];
+  }
+
+  function toNightVision(r, g, b, a) {
+    var newG = 0.1 * b + 0.4 * g + 0.2 * r;
+    return [0, newG, 0, a];
+  }
+
+  var image = new Image();
+  image.onload = function() {
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < imageData.data.length / 4; i++) {
+      var r = imageData.data[4 * i];
+      var g = imageData.data[4 * i + 1];
+      var b = imageData.data[4 * i + 2];
+      var a = imageData.data[4 * i + 3];
+
+      var rgba = toNightVision(r, g, b, a);
+      // var rgba = toGrayScale(r, g, b, a);
+
+      imageData.data[4 * i] = rgba[0];
+      imageData.data[4 * i + 1] = rgba[1];
+      imageData.data[4 * i + 2] = rgba[2];
+      imageData.data[4 * i + 3] = rgba[3];
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
+  image.src = "city.png";
+</script>
