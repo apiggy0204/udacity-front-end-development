@@ -37,11 +37,13 @@ setTimeout(function() {
 }, 1000);
 ~~~
 
-## Prototype Chains
+## Prototypal Inheritance and Prototype Chains
 
-You create an new object via `Object.create(obj)` with the specified object `obj`.
+A new object can inherit the properties of an old object.
 
-There is a linkage between the new object and the source object. When the property lookup in the new object fails, it will fall back to look up in the source object.
+You create an new object via `Object.create(obj)` with an old object `obj`.
+
+There is a linkage between the new object and the old object. When the property lookup in the new object fails, it will fall back to look up in the source object.
 
 ~~~js
 var gold = {a: 1};
@@ -50,6 +52,41 @@ console.log(rose.a); // property not found; fall back to look up in gold
 
 gold.z = 3;
 console.log(rose.z); // property not found; fall back to look up in gold
+~~~
+
+Create a useful object: (from *JavaScript: The Good Parts*)
+
+~~~js
+var myMammal = {
+    name : 'Herb the Mammal',
+    get_name : function (  ) {
+        return this.name;
+    },
+    says : function (  ) {
+        return this.saying || '';
+    }
+};
+~~~
+
+Inherit from an object and customizing it (aka **Differential Inheritance**):
+
+~~~js
+var myCat = Object.create(myMammal);
+myCat.name = 'Henrietta';
+myCat.saying = 'meow';
+myCat.purr = function (n) {
+    var i, s = '';
+    for (i = 0; i < n; i += 1) {
+        if (s) {
+            s += '-';
+        }
+        s += 'r';
+    }
+    return s;
+};
+myCat.get_name = function (  ) {
+    return this.says() + ' ' + this.name + ' ' + this.says();
+};
 ~~~
 
 ## Object Decorator Pattern
@@ -135,7 +172,7 @@ Car.methods = {
 
 Delegation methods
 
-* .create(obj) returns a new object that has obj as its prototype object.
+* `Object.create(obj)` returns a new object that has obj as its prototype object.
 * In this case, function lookups will fail, and alternatively, we will fall back to search the functions in its prototype object.
 
 ~~~js
@@ -146,8 +183,8 @@ var Car = function(loc) {
 }
 ~~~
 
-The prototype object is provided by js for every function objects.
-It allows you to store the functions in a function object's .prototype property.
+The `prototype` object is provided by js for every function objects.
+It allows you to store the functions in a function object's `.prototype` property.
 It is nothing special from other attributes.
 You have to associate the functions with a class by using `Object.create()` method.
 
@@ -169,23 +206,25 @@ or simply
 Car.prototype.move = function() { ... }
 ~~~
 
+Some people would say:
+
 > "`myCar`'s `prototype` is `Car.prototype`"
 
-`myCar`'s prototype is not `Car.prototype`. The function lookup falls back to look up in `Car.prototype` when the look up in `myCar` fails.
+To be more accurate, `myCar`'s prototype is not `Car.prototype`. The function lookup falls back to look up in `Car.prototype` when the look up in `myCar` fails.
 
 However, `Car`'s prototype is just `Car.prototype`.
 
 
-### .prototype.constructor
+### The `.prototype.constructor` Property
 
 ~~~js
-Car.prototype.constructor // Car object
+Car.prototype.constructor // Car
 ~~~
 
 Use: to find out which function build this object
 
 ~~~js
-myCar.constructor // Car object (it fails to find it in myCar and fall back to look up in Car.prototype! Car.prototype happens to have this method.
+myCar.constructor // Car (it fails to find it in myCar and fall back to look up in Car.prototype! Car.prototype happens to have this method.
 ~~~
 
 Look up in the prototype chain
@@ -251,7 +290,7 @@ the difference between pseudoclassical pattern and prototypal pattern is the opt
 
 There is no "the best" class pattern!
 
-## Superclasses and subclasses
+## Functional Inheritance
 
 You can use the Car constructor function to create the base object and extend functions in subclasses constructor.
 
@@ -281,7 +320,7 @@ var myVan = Van(4)
 var myCop = Cop(5)
 ~~~
 
-## Pseudoclassical Subclasses
+## Pseudoclassical Inheritance
 
 The correct way to use `new` to create an object of a subclass of `Car`, say `Van`:
 
@@ -296,19 +335,28 @@ var Van = function(loc) {
 
 var myCar = new Car(3);
 var myVan = new Van(4);
+~~~
 
+Then we found something goes wrong with the prototype relationship:
+
+~~~js
 myVan.move() // Not working!  delegate to Object.prototype
 
 Van.prototype = Car.prototype // This is bad as they are both the same reference to Car.prototype, so you can't modify one without modifying the other.
 
 Van.prototype = new Car(); // the input param(s) are undefined; it may throw error during object creation
+~~~
 
+The correct way to create the correct prototype chain:
+
+~~~js
 Van.prototype = Object.create(Car.prototype) // This allows delegation to Car.prototype for method lookups
 
 Van.prototype.constructor = Van; // The inherit prototype object has a property called .constructor. You have to manually set it to the right value!
 
 Van.prototype.grab = function() { ... } // Define functions of the subclass
 ~~~
+
 
 
 
